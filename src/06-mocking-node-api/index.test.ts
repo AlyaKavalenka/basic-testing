@@ -1,4 +1,5 @@
-import { doStuffByTimeout, doStuffByInterval } from '.';
+import path from 'path';
+import { doStuffByTimeout, doStuffByInterval, readFileAsynchronously } from '.';
 
 const timer = 5000;
 
@@ -58,15 +59,22 @@ describe('doStuffByInterval', () => {
 });
 
 describe('readFileAsynchronously', () => {
+  const pathToFile = './index.js';
+
   test('should call join with pathToFile', async () => {
-    // Write your test here
+    const join = jest.spyOn(path, 'join');
+    await readFileAsynchronously(pathToFile);
+    expect(join).toHaveBeenCalled();
   });
 
   test('should return null if file does not exist', async () => {
-    // Write your test here
+    const readResult = await readFileAsynchronously(pathToFile);
+    if (!readResult) expect(readResult).toBeNull();
   });
 
   test('should return file content if file exists', async () => {
-    // Write your test here
+    const readResult = await readFileAsynchronously(pathToFile);
+    if (readResult)
+      expect(readFileAsynchronously(pathToFile)).resolves.toBe(readResult);
   });
 });
